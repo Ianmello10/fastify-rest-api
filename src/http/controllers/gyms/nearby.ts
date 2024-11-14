@@ -1,20 +1,11 @@
-import { z } from "zod";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { makeFetchNearbyGymsService } from "@/services/factories/make-fetch-nearby-gym-service";
+import { fetchBodySchema } from "@/schemas/gyms-schema";
 
 export async function fetchNearby(
 	request: FastifyRequest,
 	reply: FastifyReply,
 ) {
-	const fetchBodySchema = z.object({
-		latitude: z.coerce.number().refine((value) => {
-			return Math.abs(value) <= 90;
-		}),
-		longitude: z.coerce.number().refine((value) => {
-			return Math.abs(value) <= 100;
-		}),
-	});
-
 	const { latitude, longitude } = fetchBodySchema.parse(request.query);
 
 	// factory pattern

@@ -1,21 +1,12 @@
 import { z } from "zod";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { makeCheckInService } from "@/services/factories/make-check-in-service";
+import {
+	checkInBodySchema,
+	createCheckInBodySchema,
+} from "@/schemas/check-in-schema";
 
 export async function checkIn(request: FastifyRequest, reply: FastifyReply) {
-	const createCheckInBodySchema = z.object({
-		gymId: z.string().uuid(),
-	});
-
-	const checkInBodySchema = z.object({
-		latitude: z.number().refine((value) => {
-			return Math.abs(value) <= 90;
-		}),
-		longitude: z.number().refine((value) => {
-			return Math.abs(value) <= 100;
-		}),
-	});
-
 	const { latitude, longitude } = checkInBodySchema.parse(request.body);
 	const { gymId } = createCheckInBodySchema.parse(request.params);
 

@@ -44,7 +44,7 @@ describe("SearchGym Controller(e2e)", () => {
 			})
 			.send();
 
-		expect(gymsResponse.statusCode).toEqual(201);
+		expect(gymsResponse.statusCode).toEqual(200);
 		expect(gymsResponse.body.gyms).toHaveLength(1);
 		expect(gymsResponse.body.gyms).toEqual([
 			expect.objectContaining({
