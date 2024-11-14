@@ -1,19 +1,14 @@
-import { z } from "zod";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { InvalidCredentialsError } from "@/services/errors/invalid-credentials-error";
 import { makeAuthService } from "@/services/factories/make-auth-service";
 import { env } from "@/env";
+import { authBodySchema } from "@/schemas/user-schema";
 
 export async function authenticate(
 	request: FastifyRequest,
 	reply: FastifyReply,
 ) {
-	const registerBodySchema = z.object({
-		email: z.string().email(),
-		password: z.string().min(3),
-	});
-
-	const { email, password } = registerBodySchema.parse(request.body);
+	const { email, password } = authBodySchema.parse(request.body);
 
 	try {
 		// factory pattern
